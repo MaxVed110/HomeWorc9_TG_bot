@@ -1,11 +1,13 @@
 from datetime import date
 import json
 import re
+import logger_t
 
 
 def add_data_telephone(key, telephone_dictionary, data):
     data += f'/{date.today()}'
     telephone_dictionary[key] = data
+    logger_t.logger.info('Добавлен новый контакт')
 
 
 def print_string_directory(flag_key, telephone_directory: dict):
@@ -13,8 +15,10 @@ def print_string_directory(flag_key, telephone_directory: dict):
     if flag_key == '/all':
         for key in telephone_directory:
             msg_string += data_list_parse(key, telephone_directory)
+        logger_t.logger.debug(f'Произведена консольная печать всего справочника {msg_string}')
     else:
         msg_string += data_list_parse(flag_key, telephone_directory)
+        logger_t.logger.debug(f'В консоль напечатан котнакт {msg_string}')
     return msg_string
 
 
@@ -39,7 +43,7 @@ def data_list_parse(key, telephone_directory: dict, flag='line'):
         else:
             data_string += f'{key}\n \t{data_list[0]}\n \tномер телефона: {number_telef(data_list[1])}\n'\
                 f'\tдата создания контакта: {data_list[-1]}'
-
+    logger_t.logger.debug(f'Список распарсен в строку {data_string}')
     return data_string
 
 
@@ -50,10 +54,12 @@ def number_telef(telephone_number):
 
 
 def del_data_tel(key, dictionary: dict):
+    logger_t.logger.debug(f'Удален контакт {dictionary[key]}')
     del dictionary[key]
 
 
 def del_all_data_tel(dictionary: dict):
+    logger_t.logger.info('Очищен весь справочник')
     dictionary.clear()
 
 
@@ -104,16 +110,14 @@ def load_on_file(data_dictionary, file: str, identific: str): #ToDo
         data = open(file, 'r')
         key = 1
         for line in data:
-           key_l = 'l' + str(1)
-           key +=1
-           data_dictionary[key_l] = data_file_parse_txt(line)
+            key_l = 'l' + str(1)
+            key +=1
+            data_dictionary[key_l] = data_file_parse_txt(line)
     logger_t.logger.debug('Load on file end')
 
 
 def data_file_parse_txt(line:str):
     list_del = ['-', 'номер', 'телефона:','примечание', 'дата', 'создания', 'контакта:', ',', ';']
-    str_buf = []
-    new_str = ''
     str_buf = line.split()
     del str_buf[0]
     new_list_data = [word for word in str_buf if word not in list_del]

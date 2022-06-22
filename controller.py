@@ -12,7 +12,7 @@ def add_data_telephone(key, telephone_dictionary, data):
 
 def print_string_directory(flag_key, telephone_directory: dict):
     msg_string =''
-    if flag_key == '/all':
+    if flag_key == 'all':
         for key in telephone_directory:
             msg_string += data_list_parse(key, telephone_directory)
         logger_t.logger.debug(f'Произведена консольная печать всего справочника {msg_string}')
@@ -85,19 +85,19 @@ def edit_data_tel(key, string_data, dictionary: dict, identific: str):
 
 
 def print_in_file(data_dictionary: dict, format: str):
-    if format == '/json':
+    if format == 'json':
         with open('data_dictionary.json', 'a') as file:
             json.dump(data_dictionary, file, indent=4, ensure_ascii=False)
             logger_t.logger.debug('Create new file')
 
-    elif format == '/txt_line':
+    elif format == 'txt_line':
         with open('data_dictionary_line.txt', 'a') as file:
             for key in data_dictionary:
                 data_string = data_list_parse(key, data_dictionary)
                 file.write(data_string + '\n')
                 logger_t.logger.debug('Create new file')
 
-    elif format == '/txt_columns':
+    elif format == 'txt_columns':
         with open('data_dictionary_columns.txt', 'a') as file:
             for key in data_dictionary:
                 data_string = data_list_parse(key, data_dictionary, 'columns')

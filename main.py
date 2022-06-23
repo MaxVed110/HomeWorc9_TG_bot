@@ -61,6 +61,5 @@ if __name__ == '__main__':
     dispatcher.add_handler(cls_handler)
     dispatcher.add_handler(print_handler)
 
-
     updater.start_polling()
     updater.idle()

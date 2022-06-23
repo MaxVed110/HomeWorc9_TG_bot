@@ -1,6 +1,7 @@
 from telegram import Update
-from telegram.ext import  ConversationHandler
+from telegram.ext import ConversationHandler
 import controller
+import logger_t
 from main import telephone_directory
 
 
@@ -134,12 +135,12 @@ def print_in_file(update: Update, _):
     update.message.reply_text('Для выхода введи /exit\nВозврат в главное меню - /start')
 
 
-def cancel_exit(update, _):
+def cancel_exit(update: Update, _):
     update.message.reply_text(
         'Мое дело предложить - Ваше отказаться\n'
         'Будут нужны номера - пиши.\n'
-        '/start'
-    )
+        '/start')
     controller.print_in_file(telephone_directory, 'txt_line')
+    logger_t.logger.info('End bot')
     return ConversationHandler.END
 

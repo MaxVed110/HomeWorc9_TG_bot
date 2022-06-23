@@ -7,7 +7,7 @@ import logger_t
 def add_data_telephone(key, telephone_dictionary, data):
     data += f'/{date.today()}'
     telephone_dictionary[key] = data
-    logger_t.logger.info('Добавлен новый контакт')
+    logger_t.logger.info(f'Add data telephone: {data}')
 
 
 def print_string_directory(flag_key, telephone_directory: dict):
@@ -66,20 +66,32 @@ def del_all_data_tel(dictionary: dict):
 def edit_data_tel(key, string_data, dictionary: dict, identific: str):
     data_list = dictionary[key].split('/')
     if identific == 'номер':
+        logger_t.logger.info(f'Edit number: {data_list[1]} => ')
         data_list[1] = string_data
+        logger_t.logger.info(f'Edit number: => {data_list[1]} ')
     elif identific == 'ФИО':
+        logger_t.logger.info(f'Edit name: {data_list[0]} => ')
         data_list[0] = string_data
+        logger_t.logger.info(f'Edit name: => {data_list[0]} ')
 
     if len(data_list) == 4:
         if identific == 'дата':
+            logger_t.logger.info(f'Edit data:  {data_list[3]} =>')
             data_list[3] = string_data
+            logger_t.logger.info(f'Edit data: => {data_list[3]} ')
         elif identific == 'комментарий':
+            logger_t.logger.info(f'Edit comment:  {data_list[2]} =>')
             data_list[2] = string_data
+            logger_t.logger.info(f'Edit comment: => {data_list[2]} ')
     else:
         if identific == 'дата':
+            logger_t.logger.info(f'Edit data:  {data_list[3]} =>')
             data_list[3] = string_data
+            logger_t.logger.info(f'Edit data: => {data_list[3]} ')
         elif identific == 'комментарий':
             data_list.insert(2, string_data)
+            logger_t.logger.info('Add comment')
+
     str = '/'.join(data_list)
     dictionary[key] = str
 

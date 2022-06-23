@@ -1,5 +1,7 @@
 from telegram import Update, ReplyKeyboardRemove
 from telegram.ext import Updater, CommandHandler, MessageHandler, filters, ConversationHandler
+
+import logger_t
 from logger_t import logger_cls
 import tg_command
 
@@ -8,9 +10,11 @@ telephone_directory = {}
 
 if __name__ == '__main__':
     logger_cls()
+    logger_t.logger.info('Start bot')
     updater = Updater('5375496557:AAGzB-SB1rey_oojdTnggtOGUxOX9uL6TBs')
     dispatcher = updater.dispatcher
     start_handler = CommandHandler('start', tg_command.start_main_menu)
+    end_handler = CommandHandler('exit', tg_command.cancel_exit)
     add_handler = ConversationHandler(
         entry_points=[CommandHandler('add', tg_command.add_start)],
         states={
@@ -48,21 +52,15 @@ if __name__ == '__main__':
         },
         fallbacks=[CommandHandler('exit', tg_command.cancel_exit)]
     )
-    print_in_file_handler = ConversationHandler(
-        entry_points=[CommandHandler('print_in_file', tg_command.print_in_file_start)],
-        states={
-            tg_command.PRINT_FILE_KEY: [MessageHandler(filters.Filters.text & (~filters.Filters.command), tg_command.print_in_file)]
-        },
-        fallbacks=[CommandHandler('exit', tg_command.cancel_exit)]
-    )
 
     dispatcher.add_handler(start_handler)
+    dispatcher.add_handler(end_handler)
     dispatcher.add_handler(add_handler)
     dispatcher.add_handler(edit_handler)
     dispatcher.add_handler(delete_handler)
     dispatcher.add_handler(cls_handler)
     dispatcher.add_handler(print_handler)
-    dispatcher.add_handler(print_in_file_handler)
+
 
     updater.start_polling()
     updater.idle()
